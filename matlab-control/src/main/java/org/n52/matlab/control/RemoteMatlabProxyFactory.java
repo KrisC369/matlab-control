@@ -22,6 +22,10 @@ package org.n52.matlab.control;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.n52.matlab.control.MatlabProxy.Identifier;
+import org.n52.matlab.control.MatlabProxyFactory.Request;
+import org.n52.matlab.control.MatlabProxyFactory.RequestCallback;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,16 +36,12 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.n52.matlab.control.MatlabProxy.Identifier;
-import org.n52.matlab.control.MatlabProxyFactory.Request;
-import org.n52.matlab.control.MatlabProxyFactory.RequestCallback;
 
 /**
  * Creates remote instances of {@link MatlabProxy}. Creating a proxy will either connect to an existing session of
@@ -244,6 +244,10 @@ class RemoteMatlabProxyFactory implements ProxyFactory
                 processArguments.add("-nosplash");
                 processArguments.add("-nodesktop");
             }
+        }
+        if(_options.getNoGui())
+        {
+            processArguments.add("-nodisplay");
         }
         else
         {

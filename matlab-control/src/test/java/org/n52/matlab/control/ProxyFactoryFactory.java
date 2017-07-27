@@ -28,7 +28,7 @@ package org.n52.matlab.control;
 public enum ProxyFactoryFactory {
 
     DEFAULT(new MatlabProxyFactoryOptions.Builder().build()),
-    HEADLESS(new MatlabProxyFactoryOptions.Builder().setHidden(true).build());
+    HEADLESS(new MatlabProxyFactoryOptions.Builder().setNoGui(true).setHidden(true).build());
 
     private final MatlabProxyFactory factory;
 

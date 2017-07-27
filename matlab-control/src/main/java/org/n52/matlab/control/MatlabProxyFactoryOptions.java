@@ -46,7 +46,9 @@ public class MatlabProxyFactoryOptions
     private final String _licenseFile;
     private final boolean _useSingleCompThread;
     private final int _port;
-        
+    private volatile boolean _nogui = false;
+
+
     private MatlabProxyFactoryOptions(Builder options)
     {
         _matlabLocation = options._matlabLocation;
@@ -59,6 +61,7 @@ public class MatlabProxyFactoryOptions
         _licenseFile = options._licenseFile;
         _useSingleCompThread = options._useSingleCompThread;
         _port = options._port;
+        _nogui = options._nogui;
     }
 
     String getMatlabLocation()
@@ -110,7 +113,9 @@ public class MatlabProxyFactoryOptions
     {
         return _port;
     }
-    
+
+    boolean getNoGui(){return _nogui;}
+
     /**
      * Creates instances of {@link MatlabProxyFactoryOptions}. Any and all of these properties may be left unset, if so
      * then a default will be used. Depending on how the factory operates, not all properties may be used. Currently all
@@ -141,6 +146,7 @@ public class MatlabProxyFactoryOptions
         private volatile String _licenseFile = null;
         private volatile boolean _useSingleCompThread = false;
         private volatile int _port = 2100;
+        private volatile boolean _nogui = false;
         
         //Assigning to a long is not atomic, so use an AtomicLong so that a thread always sees an intended value
         private final AtomicLong _proxyTimeout = new AtomicLong(180000L);
@@ -392,6 +398,19 @@ public class MatlabProxyFactoryOptions
             
             _port = port;
             
+            return this;
+        }
+
+        /**
+         * Sets whether MATLAB should run completely in background or headless without graphical user interface. By default this property is set to {@code false}. If set to
+         * {@code true} then the matlab instance will not produce a visible or graphical user interface.
+         * <br><br>
+         * @param nogui
+         */
+        public final Builder setNoGui(boolean nogui)
+        {
+            _nogui = nogui;
+
             return this;
         }
         
