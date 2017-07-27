@@ -1,10 +1,5 @@
 package org.n52.matlab.control;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
-
 /*
  * Copyright (c) 2013, Joshua Kaplan
  * All rights reserved.
@@ -30,36 +25,18 @@ import static junit.framework.Assert.assertEquals;
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public abstract class MatlabProxyTest
-{
+public enum ProxyFactoryFactory {
 
-    @Before
-    public void clear() throws MatlabInvocationException
-    {
-        getProxy().eval("clear");
+    DEFAULT(new MatlabProxyFactoryOptions.Builder().build()),
+    HEADLESS(new MatlabProxyFactoryOptions.Builder().setHidden(true).build());
+
+    private final MatlabProxyFactory factory;
+
+    ProxyFactoryFactory(MatlabProxyFactoryOptions options) {
+        factory = new MatlabProxyFactory(options);
     }
 
-    @Test
-    public void testSetVariable() throws MatlabInvocationException
-    {
-        getProxy().setVariable("a", 5);
+    public MatlabProxyFactory getFactory() {
+        return this.factory;
     }
-
-    @Test
-    public void testSetGetVariable() throws MatlabInvocationException
-    {
-        double expected = 5;
-        getProxy().setVariable("a", expected);
-        Object result = getProxy().getVariable("a");
-        double actual = ((double[]) result)[0];
-        assertEquals(expected, actual, 0);
-    }
-
-    @Test
-    public void testEval() throws MatlabInvocationException
-    {
-        getProxy().eval("disp('Hello World')");
-    }
-
-    protected abstract MatlabProxy getProxy();
 }
